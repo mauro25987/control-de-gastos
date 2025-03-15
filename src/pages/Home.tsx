@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { Link } from 'react-router'
-import { Wallets } from '../types'
+import { Id, Wallets } from '../types'
 
 const initialState: Wallets = [
   { name: 'Brou', id: 'asd-asd-asd-asd-asd', amount: 2000, transactions: [] },
@@ -31,6 +31,11 @@ export function Home() {
     price.value = ''
   }
 
+  const handleDeleteWalltet = (id: Id) => {
+    const newWalletsList = wallets.filter(wallet => wallet.id !== id)
+    setWallets(newWalletsList)
+  }
+
   return (
     <div className="flex flex-col">
       <div>
@@ -42,7 +47,10 @@ export function Home() {
                 <div>
                   <Link to={`/wallet/${id}`}>{name}</Link>
                 </div>
-                <div>{amount}</div>
+                <div className="flex gap-2">
+                  <div>{amount}</div>
+                  <div onClick={() => handleDeleteWalltet(id)}>Eliminar</div>
+                </div>
               </li>
             ))
           ) : (
