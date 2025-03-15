@@ -4,17 +4,17 @@ import { Home, Wallet } from './pages'
 
 const router = createBrowserRouter([
   {
-    path: '/',
+    path: '/control-de-gastos/',
     element: <Layout />,
     children: [
       { index: true, element: <Home /> },
-      { path: '/wallet/:id', element: <Wallet /> },
+      { path: '/control-de-gastos/wallet/:id', element: <Wallet /> },
     ],
   },
-  // {
-  //   path: '*',
-  //   element: <div>Error 404</div>,
-  // },
+  {
+    path: '*',
+    element: <div>Error 404</div>,
+  },
 ])
 
 function App() {
