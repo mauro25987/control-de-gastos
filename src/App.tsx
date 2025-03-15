@@ -11,10 +11,10 @@ const router = createBrowserRouter([
       { path: '/wallet/:id', element: <Wallet /> },
     ],
   },
-  {
-    path: '*',
-    element: <div>Error 404</div>,
-  },
+  // {
+  //   path: '*',
+  //   element: <div>Error 404</div>,
+  // },
 ])
 
 function App() {
