@@ -1,14 +1,9 @@
-import { useState } from 'react'
 import { Link } from 'react-router'
-import { Id, Wallets } from '../types'
-
-const initialState: Wallets = [
-  { name: 'Brou', id: 'asd-asd-asd-asd-asd', amount: 2000, transactions: [] },
-  { name: 'Itau', id: 'asd-asd-asd-asd-sdd', amount: 4000, transactions: [] },
-]
+import { useWallet } from '../hooks'
+import { Id } from '../types'
 
 export function Home() {
-  const [wallets, setWallets] = useState<Wallets>(initialState)
+  const { wallets, addWallet, delWallet } = useWallet()
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -18,22 +13,18 @@ export function Home() {
     const isInputName = name instanceof HTMLInputElement
     const isInputPrice = price instanceof HTMLInputElement
     if (!isInputName || !isInputPrice || price === null || name === null) return
-    setWallets([
-      ...wallets,
-      {
-        id: crypto.randomUUID(),
-        name: name.value,
-        amount: parseInt(price.value),
-        transactions: [],
-      },
-    ])
+    addWallet({
+      id: crypto.randomUUID(),
+      name: name.value,
+      amount: parseInt(price.value),
+      transactions: [],
+    })
     name.value = ''
     price.value = ''
   }
 
-  const handleDeleteWalltet = (id: Id) => {
-    const newWalletsList = wallets.filter(wallet => wallet.id !== id)
-    setWallets(newWalletsList)
+  const handleRemoveWallet = (id: Id) => () => {
+    delWallet(id)
   }
 
   return (
@@ -49,7 +40,7 @@ export function Home() {
                 </div>
                 <div className="flex gap-2">
                   <div>{amount}</div>
-                  <div onClick={() => handleDeleteWalltet(id)}>Eliminar</div>
+                  <div onClick={handleRemoveWallet(id)}>Eliminar</div>
                 </div>
               </li>
             ))
