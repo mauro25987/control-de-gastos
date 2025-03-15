@@ -10,20 +10,21 @@ export const useWallet = () => {
   const [wallets, setWallets] = useState<Wallets>(initialState)
 
   function addWallet({ id, name, amount, transactions }: Wallet) {
-    setWallets([
-      ...wallets,
-      {
-        id,
-        name,
-        amount,
-        transactions,
-      },
-    ])
+    setWallets([...wallets, { id, name, amount, transactions }])
   }
 
   function delWallet(id: Id) {
     const newWalletsList = wallets.filter(wallet => wallet.id !== id)
     setWallets(newWalletsList)
   }
-  return { wallets, delWallet, addWallet }
+
+  function getWallet(id: Id): Wallet {
+    const wallet = wallets.find(wallet => wallet.id === id)
+    if (!wallet) {
+      throw new Error('Wallet not found')
+    }
+    return wallet
+  }
+
+  return { wallets, delWallet, addWallet, getWallet }
 }

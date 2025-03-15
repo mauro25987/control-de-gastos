@@ -36,7 +36,7 @@ export function Home() {
             wallets.map(({ id, name, amount }) => (
               <li key={id} className="flex justify-between gap-4">
                 <div>
-                  <Link to={`/wallet/${id}`}>{name}</Link>
+                  <Link to={`/control-de-gastos/wallet/${id}`}>{name}</Link>
                 </div>
                 <div className="flex gap-2">
                   <div>{amount}</div>
