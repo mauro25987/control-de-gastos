@@ -1,9 +1,16 @@
+import { useContext } from 'react'
 import { Link } from 'react-router'
+import { WalletsContext } from '../context'
 import { useWallet } from '../hooks'
 import { Id } from '../types'
 
 export function Home() {
-  const { wallets, addWallet, delWallet } = useWallet()
+  const { addWallet, delWallet } = useWallet()
+  const context = useContext(WalletsContext)
+  if (!context) {
+    throw new Error('Error de contexto')
+  }
+  const { wallets } = context
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()

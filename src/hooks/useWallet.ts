@@ -1,39 +1,20 @@
-import { useState } from 'react'
-import { Id, Transaction, Wallet, Wallets } from '../types'
-
-const initialState: Wallets = [
-  {
-    name: 'Brou',
-    id: 'asd-asd-asd-asd-asd',
-    amount: 2000,
-    transactions: [
-      {
-        id: 'asd-asd-asd-asd-123',
-        description: 'super',
-        total: 400,
-        type: 'income',
-      },
-      {
-        id: 'asd-asd-asd-asd-133',
-        description: 'nafta',
-        total: 4300,
-        type: 'outcome',
-      },
-    ],
-  },
-  { name: 'Itau', id: 'asd-asd-asd-asd-sdd', amount: 4000, transactions: [] },
-]
+import { useContext } from 'react'
+import { WalletsContext } from '../context'
+import { Id, Transaction, Wallet } from '../types'
 
 export const useWallet = () => {
-  const [wallets, setWallets] = useState<Wallets>(initialState)
+  const context = useContext(WalletsContext)
+  if (!context) {
+    throw new Error('Error de contexto')
+  }
+  const { setWallets, wallets } = context
 
   function addWallet({ id, name, amount, transactions }: Wallet) {
-    setWallets([...wallets, { id, name, amount, transactions }])
+    setWallets(prevSate => [...prevSate, { id, name, amount, transactions }])
   }
 
   function delWallet(id: Id) {
-    const newWalletsList = wallets.filter(wallet => wallet.id !== id)
-    setWallets(newWalletsList)
+    setWallets(prevState => prevState.filter(wallet => wallet.id !== id))
   }
 
   function getWallet(id: Id): Wallet {
@@ -45,11 +26,21 @@ export const useWallet = () => {
   }
 
   function addTransaction({ id, transaction }: { id: Id; transaction: Transaction }) {
-    const newWalletsList = wallets.map(wallet =>
-      wallet.id === id ? { ...wallet, transactions: [...wallet.transactions, transaction] } : wallet
-    )
+    const wallet = wallets.find(wallet => wallet.id === id)
+    if (!wallet) {
+      throw new Error('Wallet not found')
+    }
+    wallet.transactions.push(transaction)
+
+    if (transaction.type === 'income') {
+      wallet.amount += transaction.total
+    } else {
+      wallet.amount -= transaction.total
+    }
+
+    const newWalletsList = wallets.map(wallet => (wallet.id === id ? { ...wallet } : wallet))
     setWallets(newWalletsList)
   }
 
-  return { wallets, delWallet, addWallet, getWallet, addTransaction }
+  return { delWallet, addWallet, getWallet, addTransaction }
 }
