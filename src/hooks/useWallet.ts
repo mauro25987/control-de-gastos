@@ -2,7 +2,25 @@ import { useState } from 'react'
 import { Id, Transaction, Wallet, Wallets } from '../types'
 
 const initialState: Wallets = [
-  { name: 'Brou', id: 'asd-asd-asd-asd-asd', amount: 2000, transactions: [] },
+  {
+    name: 'Brou',
+    id: 'asd-asd-asd-asd-asd',
+    amount: 2000,
+    transactions: [
+      {
+        id: 'asd-asd-asd-asd-123',
+        description: 'super',
+        total: 400,
+        type: 'income',
+      },
+      {
+        id: 'asd-asd-asd-asd-133',
+        description: 'nafta',
+        total: 4300,
+        type: 'outcome',
+      },
+    ],
+  },
   { name: 'Itau', id: 'asd-asd-asd-asd-sdd', amount: 4000, transactions: [] },
 ]
 

@@ -15,52 +15,55 @@ export function Wallet() {
     const total = elements.namedItem('total')
     const desc = elements.namedItem('description')
     const isInput =
-      type instanceof HTMLInputElement &&
+      type instanceof RadioNodeList &&
       total instanceof HTMLInputElement &&
       desc instanceof HTMLInputElement
     if (!isInput || type === null || total === null || desc === null) return
+    const selectedType = type.value as 'outcome' | 'income'
     addTransaction({
       id,
       transaction: {
         id: crypto.randomUUID(),
-        type: type.value,
+        type: selectedType,
         description: desc.value,
         total: parseInt(total.value),
       },
     })
-    type.value = ''
+    type.value = 'outcome'
     total.value = ''
     desc.value = ''
   }
 
   return (
     <div>
-      <div>
+      <div className="">
         <div>{wallet.name}</div>
-        <ul>
-          <li>{wallet.amount}</li>
-          <li>
-            {wallet.transactions.length > 0
-              ? wallet.transactions.map(transaction => (
-                  <span key={transaction.id}>
-                    {transaction.description}: {transaction.total}
-                  </span>
-                ))
-              : 'no hay transacciones'}
-          </li>
-        </ul>
+        <div>
+          <ul>
+            <li>{wallet.amount}</li>
+            <li>
+              {wallet.transactions.length > 0
+                ? wallet.transactions.map(transaction => (
+                    <div key={transaction.id}>
+                      {transaction.description}: {transaction.total} {transaction.type}
+                    </div>
+                  ))
+                : 'no hay transacciones'}
+            </li>
+          </ul>
+        </div>
       </div>
       <div>
         <form onSubmit={handleSubmit} className="flex flex-col">
-          <div>
-            <label htmlFor="">
-              <input type="checkbox" name="test" />
-              Gasto
-            </label>
-            <label htmlFor="">
-              <input type="checkbox" name="test2" />
-              Ingreso
-            </label>
+          <div className="flex justify-around">
+            <div>
+              <input type="radio" name="type" id="outcome" value="outcome" defaultChecked />
+              <label htmlFor="outcome">Gasto</label>
+            </div>
+            <div>
+              <input type="radio" name="type" id="income" value="income" />
+              <label htmlFor="income">Ingreso</label>
+            </div>
           </div>
           <div>
             <label>Desc</label>
