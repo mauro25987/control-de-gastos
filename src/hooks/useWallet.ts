@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Id, Wallet, Wallets } from '../types'
+import { Id, Transaction, Wallet, Wallets } from '../types'
 
 const initialState: Wallets = [
   { name: 'Brou', id: 'asd-asd-asd-asd-asd', amount: 2000, transactions: [] },
@@ -26,5 +26,12 @@ export const useWallet = () => {
     return wallet
   }
 
-  return { wallets, delWallet, addWallet, getWallet }
+  function addTransaction({ id, transaction }: { id: Id; transaction: Transaction }) {
+    const newWalletsList = wallets.map(wallet =>
+      wallet.id === id ? { ...wallet, transactions: [...wallet.transactions, transaction] } : wallet
+    )
+    setWallets(newWalletsList)
+  }
+
+  return { wallets, delWallet, addWallet, getWallet, addTransaction }
 }

@@ -1,1 +1,1 @@
-export type { Id, Transactions, Wallet, Wallets } from './wallet'
+export type { Id, Transaction, Transactions, Wallet, Wallets } from './wallet'

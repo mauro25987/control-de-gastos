@@ -9,18 +9,17 @@ export function Home() {
     e.preventDefault()
     const { elements } = e.currentTarget
     const name = elements.namedItem('name')
-    const price = elements.namedItem('price')
-    const isInputName = name instanceof HTMLInputElement
-    const isInputPrice = price instanceof HTMLInputElement
-    if (!isInputName || !isInputPrice || price === null || name === null) return
+    const amount = elements.namedItem('amount')
+    const isInput = name instanceof HTMLInputElement && amount instanceof HTMLInputElement
+    if (!isInput || amount === null || name === null) return
     addWallet({
       id: crypto.randomUUID(),
       name: name.value,
-      amount: parseInt(price.value),
+      amount: parseInt(amount.value),
       transactions: [],
     })
     name.value = ''
-    price.value = ''
+    amount.value = ''
   }
 
   const handleRemoveWallet = (id: Id) => () => {
@@ -58,7 +57,7 @@ export function Home() {
           </div>
           <div>
             <label>Monto</label>
-            <input type="number" name="price" required />
+            <input type="number" name="amount" required />
           </div>
           <div className="text-center">
             <button>Agregar</button>

@@ -3,10 +3,35 @@ import { useWallet } from '../hooks'
 import { Id } from '../types'
 
 export function Wallet() {
-  const { getWallet } = useWallet()
+  const { getWallet, addTransaction } = useWallet()
   const { id } = useParams<{ id: Id }>()
   if (!id) return
   const wallet = getWallet(id)
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+    const { elements } = e.currentTarget
+    const type = elements.namedItem('type')
+    const total = elements.namedItem('total')
+    const desc = elements.namedItem('description')
+    const isInput =
+      type instanceof HTMLInputElement &&
+      total instanceof HTMLInputElement &&
+      desc instanceof HTMLInputElement
+    if (!isInput || type === null || total === null || desc === null) return
+    addTransaction({
+      id,
+      transaction: {
+        id: crypto.randomUUID(),
+        type: type.value,
+        description: desc.value,
+        total: parseInt(total.value),
+      },
+    })
+    type.value = ''
+    total.value = ''
+    desc.value = ''
+  }
 
   return (
     <div>
@@ -26,14 +51,24 @@ export function Wallet() {
         </ul>
       </div>
       <div>
-        <form onSubmit={() => {}} className="flex flex-col">
+        <form onSubmit={handleSubmit} className="flex flex-col">
           <div>
-            <label>Nombre</label>
-            <input type="text" name="name" required />
+            <label htmlFor="">
+              <input type="checkbox" name="test" />
+              Gasto
+            </label>
+            <label htmlFor="">
+              <input type="checkbox" name="test2" />
+              Ingreso
+            </label>
+          </div>
+          <div>
+            <label>Desc</label>
+            <input type="text" name="description" required />
           </div>
           <div>
             <label>Monto</label>
-            <input type="number" name="price" required />
+            <input type="number" name="total" required />
           </div>
           <div className="flex justify-evenly">
             <button>Agregar</button>
