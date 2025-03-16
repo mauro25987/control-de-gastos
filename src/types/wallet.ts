@@ -5,6 +5,7 @@ export type Transaction = {
   type: 'income' | 'outcome'
   description: string
   total: number
+  createdAt: number
 }
 
 export type Transactions = Transaction[]

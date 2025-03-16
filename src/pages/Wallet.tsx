@@ -1,5 +1,6 @@
 import { Link, useParams } from 'react-router'
 import { useWallet } from '../hooks'
+import { formatDate } from '../services'
 import { Id } from '../types'
 
 export function Wallet() {
@@ -27,6 +28,7 @@ export function Wallet() {
         type: selectedType,
         description: desc.value,
         total: parseInt(total.value),
+        createdAt: Date.now(),
       },
     })
     type.value = 'outcome'
@@ -45,7 +47,8 @@ export function Wallet() {
               {wallet.transactions.length > 0
                 ? wallet.transactions.map(transaction => (
                     <div key={transaction.id}>
-                      {transaction.description}: {transaction.total} {transaction.type}
+                      {transaction.description}: {transaction.total} {transaction.type}: Date:
+                      {formatDate(transaction.createdAt)}
                     </div>
                   ))
                 : 'no hay transacciones'}
