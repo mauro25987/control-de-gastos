@@ -1,15 +1,20 @@
+import { useState } from 'react'
 import { Link, useParams } from 'react-router'
-import { useWallet, useWalletContext } from '../hooks'
+import { useSeo, useWallet, useWalletContext } from '../hooks'
 import { formatDate } from '../services'
 import { Id } from '../types'
 
 export function Wallet() {
   const { dispatch } = useWalletContext()
+  useSeo({ title: 'Billetera', description: 'Pagina de una billetera' })
+
+  const [editinTransactionId, setEditinTransactionId] = useState<Id | null>(null)
+  const [newName, setNewName] = useState('')
 
   const { getWallet } = useWallet()
-  const { id } = useParams<{ id: Id }>()
-  if (!id) return
-  const wallet = getWallet(id)
+  const { id: idWallet } = useParams<{ id: Id }>()
+  if (!idWallet) return
+  const wallet = getWallet(idWallet)
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -26,7 +31,7 @@ export function Wallet() {
     dispatch({
       type: 'add_transaction',
       payload: {
-        id,
+        id: idWallet,
         transaction: {
           id: crypto.randomUUID(),
           type: selectedType,
@@ -41,6 +46,16 @@ export function Wallet() {
     desc.value = ''
   }
 
+  const handleEditTransactionName = (idWallet: Id, id: Id, desc: string) => () => {
+    if (newName.trim() === '') {
+      setNewName(desc)
+    } else {
+      dispatch({ type: 'edit_transaction_name', payload: { idWallet, id, newName } })
+    }
+    setEditinTransactionId(null)
+    setNewName('')
+  }
+
   return (
     <div>
       <div className="">
@@ -50,10 +65,23 @@ export function Wallet() {
             <li>{wallet.amount}</li>
             <li>
               {wallet.transactions.length > 0
-                ? wallet.transactions.map(transaction => (
-                    <div key={transaction.id}>
-                      {transaction.description}: {transaction.total} {transaction.type}: Date:
-                      {formatDate(transaction.createdAt)}
+                ? wallet.transactions.map(({ id, description, total, type, createdAt }) => (
+                    <div key={id}>
+                      {editinTransactionId === id ? (
+                        <input
+                          type="text"
+                          name="description"
+                          value={newName}
+                          onChange={e => setNewName(e.target.value)}
+                          onBlur={handleEditTransactionName(idWallet, id, description)}
+                          autoFocus
+                        />
+                      ) : (
+                        description
+                      )}
+                      {total} {type}: Date:
+                      {formatDate(createdAt)}
+                      <button onClick={() => setEditinTransactionId(() => id)}>Editar</button>
                     </div>
                   ))
                 : 'no hay transacciones'}

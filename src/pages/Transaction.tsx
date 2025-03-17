@@ -1,9 +1,11 @@
 import { Link } from 'react-router'
-import { useWalletContext } from '../hooks'
+import { useSeo, useWalletContext } from '../hooks'
 import { formatDate } from '../services'
 
 export function Transaction() {
   const { state: wallets } = useWalletContext()
+  useSeo({ title: 'Transacciones', description: 'Pagina de transacciones de una Billetera' })
+
   return (
     <div>
       <h2>Transferencias</h2>

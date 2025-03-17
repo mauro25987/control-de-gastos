@@ -1,10 +1,12 @@
 import { useState } from 'react'
 import { Link } from 'react-router'
-import { useWalletContext } from '../hooks'
+import { useSeo, useWalletContext } from '../hooks'
 import { Id } from '../types'
 
 export function Home() {
   const { state: wallets, dispatch } = useWalletContext()
+  useSeo({ title: 'Home - Billeteras', description: 'Pagina lista de Billeteras' })
+
   const [newName, setNewName] = useState('')
   const [editingWalletId, setEditingWalletId] = useState<Id | null>(null)
 

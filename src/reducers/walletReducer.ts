@@ -7,6 +7,7 @@ export type WalletAction =
   | { type: 'del_wallet'; payload: Id }
   | { type: 'edit_wallet_name'; payload: { id: Id; newName: string } }
   | { type: 'add_transaction'; payload: { id: Id; transaction: Transaction } }
+  | { type: 'edit_transaction_name'; payload: { idWallet: Id; id: Id; newName: string } }
 
 export function walletReduder(state: WalletState, action: WalletAction): WalletState {
   switch (action.type) {
@@ -37,6 +38,21 @@ export function walletReduder(state: WalletState, action: WalletAction): WalletS
         return wallet
       })
     }
+
+    case 'edit_transaction_name': {
+      const { id, newName, idWallet } = action.payload
+      return state.map(wallet =>
+        wallet.id === idWallet
+          ? {
+              ...wallet,
+              transactions: wallet.transactions.map(transaction =>
+                transaction.id === id ? { ...transaction, description: newName } : transaction
+              ),
+            }
+          : wallet
+      )
+    }
+
     default:
       return state
   }
