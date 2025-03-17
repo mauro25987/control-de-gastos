@@ -1,54 +1,129 @@
-# React + TypeScript + Vite
+# Control de Gastos
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Este proyecto es una aplicación web para gestionar tus finanzas personales. Permite a los usuarios agregar, editar y eliminar billeteras, registrar transacciones y visualizar un historial de transferencias. Está desarrollado con **React**, **TypeScript** y **Vite**.
 
-Currently, two official plugins are available:
+## Características
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- **Gestión de billeteras**: Crea, edita y elimina billeteras con un nombre y un monto inicial.
+- **Registro de transacciones**: Agrega transacciones de ingresos o egresos a cada billetera.
+- **Historial de transferencias**: Visualiza un listado de todas las transacciones realizadas.
+- **Interfaz moderna**: Diseño simple y funcional para una experiencia de usuario fluida.
 
-## Expanding the ESLint configuration
+## Tecnologías utilizadas
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+<div style="display: flex; align-items: center; gap: 10px;">
+  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg" alt="React" width="40" height="40"/>
+  <strong>React</strong>: Biblioteca para construir interfaces de usuario dinámicas.
+</div>
 
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+<div style="display: flex; align-items: center; gap: 10px;">
+  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/typescript/typescript-original.svg" alt="TypeScript" width="40" height="40"/>
+  <strong>TypeScript</strong>: Tipado estático para mejorar la calidad del código.
+</div>
+
+<div style="display: flex; align-items: center; gap: 10px;">
+  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/vitejs/vitejs-original.svg" alt="ViteJs" width="40" height="40"/>
+  <strong>ViteJs</strong>: Herramienta de desarrollo rápida y eficiente.
+</div>
+
+<div style="display: flex; align-items: center; gap: 10px;">
+  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/tailwindcss/tailwindcss-original.svg" alt="Tailwind CSS" width="40" height="40"/>
+  <strong>Tailwind CSS</strong>: Framework de utilidades para estilizar la interfaz.
+</div>
+
+<div style="display: flex; align-items: center; gap: 10px;">
+  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/reactrouter/reactrouter-original.svg" alt="React Router" width="40" height="40"/>
+  <strong>React Router</strong>: Manejo de rutas para la navegación entre páginas.
+</div>
+
+<div style="display: flex; align-items: center; gap: 10px;">
+  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/eslint/eslint-original.svg" alt="ESLint" width="40" height="40"/>
+  <strong>ESLint</strong>: Linter para mantener un código limpio y consistente.
+</div>
+
+## Instalación
+
+Sigue estos pasos para ejecutar el proyecto en tu máquina local:
+
+1. Clona este repositorio:
+
+   ```bash
+   git clone https://github.com/mauro25987/control-de-gastos.git
+   cd control-de-gastos
+   ```
+
+2. Instala las dependencias:
+
+   ```bash
+   npm install
+   ```
+
+3. Inicia el servidor de desarrollo:
+
+   ```bash
+   npm run dev
+   ```
+
+4. Abre la aplicación en tu navegador en [http://localhost:5173](http://localhost:5173).
+
+## Scripts disponibles
+
+- `npm run dev`: Inicia el servidor de desarrollo.
+- `npm run build`: Genera una versión optimizada para producción.
+- `npm run preview`: Previsualiza la aplicación después de construirla.
+- `npm run lint`: Ejecuta ESLint para verificar errores en el código.
+
+## Estructura del proyecto
+
+```plaintext
+src/
+├── components/       # Componentes reutilizables
+├── context/          # Contextos de React para el estado global
+├── hooks/            # Hooks personalizados
+├── pages/            # Páginas principales de la aplicación
+├── services/         # Funciones auxiliares y lógica de negocio
+├── types/            # Definiciones de tipos de TypeScript
+├── App.tsx           # Componente principal de la aplicación
+├── main.tsx          # Punto de entrada de la aplicación
+└── index.css         # Estilos globales
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## Funcionalidades principales
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+### 1. Gestión de billeteras
 
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
-```
+- Agregar una nueva billetera con un nombre y un monto inicial.
+- Editar el nombre de una billetera existente.
+- Eliminar una billetera.
+
+### 2. Registro de transacciones
+
+- Agregar transacciones de tipo ingreso o egreso.
+- Editar el nombre de una transacción existente.
+- Actualizar automáticamente el saldo de la billetera según las transacciones.
+
+### 3. Historial de transferencias
+
+- Visualizar todas las transacciones realizadas, incluyendo descripción, monto y fecha.
+
+## Configuración de ESLint
+
+Este proyecto utiliza ESLint con reglas específicas para React y TypeScript. Puedes expandir la configuración siguiendo las recomendaciones en la documentación oficial de ESLint.
+
+## Contribuciones
+
+¡Las contribuciones son bienvenidas! Si deseas colaborar, sigue estos pasos:
+
+1. Haz un fork del repositorio.
+2. Crea una rama para tu funcionalidad (`git checkout -b feature/nueva-funcionalidad`).
+3. Realiza tus cambios y haz un commit (`git commit -m 'Agrega nueva funcionalidad'`).
+4. Haz push a tu rama (`git push origin feature/nueva-funcionalidad`).
+5. Abre un Pull Request.
+
+## Licencia
+
+Este proyecto está bajo la licencia MIT. Consulta el archivo `LICENSE` para más detalles.
+
+---
+
+¡Gracias por usar Control de Gastos! 😊
