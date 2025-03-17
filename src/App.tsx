@@ -1,6 +1,6 @@
 import { createBrowserRouter, RouterProvider } from 'react-router'
 import { Layout } from './components'
-import { Home, Wallet } from './pages'
+import { Home, Transaction, Wallet } from './pages'
 
 const router = createBrowserRouter([
   {
@@ -9,6 +9,7 @@ const router = createBrowserRouter([
     children: [
       { index: true, element: <Home /> },
       { path: '/control-de-gastos/wallet/:id', element: <Wallet /> },
+      { path: '/control-de-gastos/transaction', element: <Transaction /> },
     ],
   },
   {

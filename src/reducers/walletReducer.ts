@@ -5,6 +5,7 @@ export type WalletState = Wallets
 export type WalletAction =
   | { type: 'add_wallet'; payload: Wallet }
   | { type: 'del_wallet'; payload: Id }
+  | { type: 'edit_wallet_name'; payload: { id: Id; newName: string } }
   | { type: 'add_transaction'; payload: { id: Id; transaction: Transaction } }
 
 export function walletReduder(state: WalletState, action: WalletAction): WalletState {
@@ -12,9 +13,16 @@ export function walletReduder(state: WalletState, action: WalletAction): WalletS
     case 'add_wallet': {
       return [...state, action.payload]
     }
+
     case 'del_wallet': {
       return state.filter(wallet => wallet.id !== action.payload)
     }
+
+    case 'edit_wallet_name': {
+      const { id, newName } = action.payload
+      return state.map(wallet => (wallet.id === id ? { ...wallet, name: newName } : wallet))
+    }
+
     case 'add_transaction': {
       const { id, transaction } = action.payload
       return state.map(wallet => {

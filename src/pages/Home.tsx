@@ -1,9 +1,12 @@
+import { useState } from 'react'
 import { Link } from 'react-router'
 import { useWalletContext } from '../hooks'
 import { Id } from '../types'
 
 export function Home() {
   const { state: wallets, dispatch } = useWalletContext()
+  const [newName, setNewName] = useState('')
+  const [editingWalletId, setEditingWalletId] = useState<Id | null>(null)
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -29,6 +32,16 @@ export function Home() {
     dispatch({ type: 'del_wallet', payload: id })
   }
 
+  const handleEditNameWallet = (id: Id, name: string) => () => {
+    if (newName.trim() === '') {
+      setNewName(name)
+    } else {
+      dispatch({ type: 'edit_wallet_name', payload: { id, newName } })
+    }
+    setEditingWalletId(null)
+    setNewName('')
+  }
+
   return (
     <div className="flex flex-col">
       <div>
@@ -38,11 +51,23 @@ export function Home() {
             wallets.map(({ id, name, amount }) => (
               <li key={id} className="flex justify-between gap-4">
                 <div>
-                  <Link to={`/control-de-gastos/wallet/${id}`}>{name}</Link>
+                  {editingWalletId === id ? (
+                    <input
+                      type="text"
+                      name="name"
+                      value={newName}
+                      onChange={e => setNewName(e.target.value)}
+                      onBlur={handleEditNameWallet(id, name)}
+                      autoFocus
+                    />
+                  ) : (
+                    <Link to={`/control-de-gastos/wallet/${id}`}>{name}</Link>
+                  )}
                 </div>
                 <div className="flex gap-2">
                   <div>{amount}</div>
                   <div onClick={handleRemoveWallet(id)}>Eliminar</div>
+                  <div onClick={() => setEditingWalletId(id)}>Editar</div>
                 </div>
               </li>
             ))
@@ -64,6 +89,7 @@ export function Home() {
           </div>
           <div className="text-center">
             <button>Agregar</button>
+            <Link to={'/control-de-gastos/transaction'}>Transferencias</Link>
           </div>
         </form>
       </div>
