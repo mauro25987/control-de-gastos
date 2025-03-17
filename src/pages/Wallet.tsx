@@ -1,10 +1,18 @@
+import { useContext } from 'react'
 import { Link, useParams } from 'react-router'
+import { WalletContext } from '../context'
 import { useWallet } from '../hooks'
 import { formatDate } from '../services'
 import { Id } from '../types'
 
 export function Wallet() {
-  const { getWallet, addTransaction } = useWallet()
+  const walletContext = useContext(WalletContext)
+  if (!walletContext) {
+    throw new Error('Error de contexto')
+  }
+  const { dispatch } = walletContext
+
+  const { getWallet } = useWallet()
   const { id } = useParams<{ id: Id }>()
   if (!id) return
   const wallet = getWallet(id)
@@ -21,14 +29,17 @@ export function Wallet() {
       desc instanceof HTMLInputElement
     if (!isInput || type === null || total === null || desc === null) return
     const selectedType = type.value as 'outcome' | 'income'
-    addTransaction({
-      id,
-      transaction: {
-        id: crypto.randomUUID(),
-        type: selectedType,
-        description: desc.value,
-        total: parseInt(total.value),
-        createdAt: Date.now(),
+    dispatch({
+      type: 'add_transaction',
+      payload: {
+        id,
+        transaction: {
+          id: crypto.randomUUID(),
+          type: selectedType,
+          description: desc.value,
+          total: parseInt(total.value),
+          createdAt: Date.now(),
+        },
       },
     })
     type.value = 'outcome'

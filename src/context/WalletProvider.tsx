@@ -1,5 +1,6 @@
-import { useState } from 'react'
-import { WalletsContext } from '../context'
+import { useReducer } from 'react'
+import { WalletContext } from '../context'
+import { walletReduder } from '../reducers'
 import { Wallets } from '../types'
 
 const initialState: Wallets = [
@@ -27,9 +28,7 @@ const initialState: Wallets = [
   { name: 'Itau', id: 'asd-asd-asd-asd-sdd', amount: 4000, transactions: [] },
 ]
 
-export const WalletsProvider = ({ children }: { children: React.ReactNode }): React.JSX.Element => {
-  const [wallets, setWallets] = useState<Wallets>(initialState)
-  return (
-    <WalletsContext.Provider value={{ wallets, setWallets }}>{children}</WalletsContext.Provider>
-  )
+export const WalletProvider = ({ children }: { children: React.ReactNode }): React.JSX.Element => {
+  const [state, dispatch] = useReducer(walletReduder, initialState)
+  return <WalletContext.Provider value={{ state, dispatch }}>{children}</WalletContext.Provider>
 }

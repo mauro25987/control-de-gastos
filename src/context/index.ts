@@ -1,2 +1,2 @@
-export { WalletsContext } from './WalletsContext'
-export { WalletsProvider } from './WalletsProvider'
+export { WalletContext } from './WalletContext'
+export { WalletProvider } from './WalletProvider'

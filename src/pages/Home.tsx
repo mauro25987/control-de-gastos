@@ -1,16 +1,14 @@
 import { useContext } from 'react'
 import { Link } from 'react-router'
-import { WalletsContext } from '../context'
-import { useWallet } from '../hooks'
+import { WalletContext } from '../context'
 import { Id } from '../types'
 
 export function Home() {
-  const { addWallet, delWallet } = useWallet()
-  const context = useContext(WalletsContext)
-  if (!context) {
+  const walletContext = useContext(WalletContext)
+  if (!walletContext) {
     throw new Error('Error de contexto')
   }
-  const { wallets } = context
+  const { state: wallets, dispatch } = walletContext
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -19,18 +17,21 @@ export function Home() {
     const amount = elements.namedItem('amount')
     const isInput = name instanceof HTMLInputElement && amount instanceof HTMLInputElement
     if (!isInput || amount === null || name === null) return
-    addWallet({
-      id: crypto.randomUUID(),
-      name: name.value,
-      amount: parseInt(amount.value),
-      transactions: [],
+    dispatch({
+      type: 'add_wallet',
+      payload: {
+        id: crypto.randomUUID(),
+        name: name.value,
+        amount: parseInt(amount.value),
+        transactions: [],
+      },
     })
     name.value = ''
     amount.value = ''
   }
 
   const handleRemoveWallet = (id: Id) => () => {
-    delWallet(id)
+    dispatch({ type: 'del_wallet', payload: id })
   }
 
   return (
