@@ -1,13 +1,8 @@
-import { useContext } from 'react'
-import { WalletContext } from '../context'
 import { Id, Wallet } from '../types'
+import { useWalletContext } from './useWalletContext'
 
 export const useWallet = () => {
-  const walletContext = useContext(WalletContext)
-  if (!walletContext) {
-    throw new Error('Error de contexto')
-  }
-  const { state: wallets } = walletContext
+  const { state: wallets } = useWalletContext()
 
   function getWallet(id: Id): Wallet {
     const wallet = wallets.find(wallet => wallet.id === id)

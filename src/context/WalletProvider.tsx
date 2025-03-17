@@ -1,7 +1,7 @@
 import { useReducer } from 'react'
-import { WalletContext } from '../context'
 import { walletReduder } from '../reducers'
 import { Wallets } from '../types'
+import { WalletContext } from './WalletContext'
 
 const initialState: Wallets = [
   {

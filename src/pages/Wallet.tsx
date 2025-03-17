@@ -1,16 +1,10 @@
-import { useContext } from 'react'
 import { Link, useParams } from 'react-router'
-import { WalletContext } from '../context'
-import { useWallet } from '../hooks'
+import { useWallet, useWalletContext } from '../hooks'
 import { formatDate } from '../services'
 import { Id } from '../types'
 
 export function Wallet() {
-  const walletContext = useContext(WalletContext)
-  if (!walletContext) {
-    throw new Error('Error de contexto')
-  }
-  const { dispatch } = walletContext
+  const { dispatch } = useWalletContext()
 
   const { getWallet } = useWallet()
   const { id } = useParams<{ id: Id }>()
