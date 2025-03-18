@@ -45,14 +45,14 @@ export function Home() {
   }
 
   return (
-    <div className="flex flex-col">
-      <div>
-        <h2>Billeteras</h2>
-        <ul>
+    <div className="mx-auto flex max-w-2xl flex-col space-y-6 p-4">
+      <div className="rounded-lg bg-white p-6 shadow-md">
+        <h2 className="mb-4 text-2xl font-semibold">Billeteras</h2>
+        <ul className="space-y-3">
           {wallets.length > 0 ? (
             wallets.map(({ id, name, amount }) => (
-              <li key={id} className="flex justify-between gap-4">
-                <div>
+              <li key={id} className="flex items-center justify-between rounded-lg bg-gray-100 p-3">
+                <div className="flex-1">
                   {editingWalletId === id ? (
                     <input
                       type="text"
@@ -63,7 +63,12 @@ export function Home() {
                       autoFocus
                     />
                   ) : (
-                    <Link to={`/control-de-gastos/wallet/${id}`}>{name}</Link>
+                    <Link
+                      to={`/control-de-gastos/wallet/${id}`}
+                      className="text-blue-500 hover:underline"
+                    >
+                      {name}
+                    </Link>
                   )}
                 </div>
                 <div className="flex gap-2">
