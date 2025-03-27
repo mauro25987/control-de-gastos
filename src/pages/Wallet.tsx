@@ -1,7 +1,7 @@
+import { Pencil } from 'lucide-react'
 import { useState } from 'react'
 import { Link, useParams } from 'react-router'
 import { useSeo, useWallet, useWalletContext } from '../hooks'
-import { formatDate } from '../services'
 import { Id } from '../types'
 
 export function Wallet() {
@@ -57,37 +57,48 @@ export function Wallet() {
   }
 
   return (
-    <div>
-      <div className="">
-        <div>{wallet.name}</div>
-        <div>
-          <ul>
-            <li>{wallet.amount}</li>
-            <li>
-              {wallet.transactions.length > 0
-                ? wallet.transactions.map(({ id, description, total, type, createdAt }) => (
-                    <div key={id}>
-                      {editinTransactionId === id ? (
-                        <input
-                          type="text"
-                          name="description"
-                          value={newName}
-                          onChange={e => setNewName(e.target.value)}
-                          onBlur={handleEditTransactionName(idWallet, id, description)}
-                          autoFocus
-                        />
-                      ) : (
-                        description
-                      )}
-                      {total} {type}: Date:
-                      {formatDate(createdAt)}
-                      <button onClick={() => setEditinTransactionId(() => id)}>Editar</button>
+    <section className="mx-auto mt-10 flex w-full flex-col gap-4 rounded bg-gray-300 p-4 md:w-3/4">
+      <div className="mt-3">
+        <h2 className="mb-3 text-center text-3xl font-bold text-black">{wallet.name}</h2>
+        <ul className="flex flex-col gap-0.5">
+          {wallet.transactions.length > 0 ? (
+            <>
+              {wallet.transactions.map(({ id, description, total, type }) => (
+                <li
+                  key={id}
+                  className="mx-5 flex items-center justify-between rounded bg-gray-100 p-2"
+                >
+                  {editinTransactionId === id ? (
+                    <input
+                      type="text"
+                      name="description"
+                      value={newName}
+                      onChange={e => setNewName(e.target.value)}
+                      onBlur={handleEditTransactionName(idWallet, id, description)}
+                      className="mx-1 w-full bg-transparent text-black outline-2"
+                      autoFocus
+                    />
+                  ) : (
+                    <div className="mx-5 font-semibold text-black">{description}</div>
+                  )}
+
+                  <div className="mx-5 flex gap-2 text-slate-600">
+                    <div className={`${type === 'income' ? 'text-red-800' : 'text-blue-700'}`}>
+                      $ {total}
                     </div>
-                  ))
-                : 'no hay transacciones'}
-            </li>
-          </ul>
-        </div>
+                    <Pencil onClick={() => setEditinTransactionId(() => id)} />
+                  </div>
+                </li>
+              ))}
+              <li className="mx-5 flex items-center justify-between rounded bg-gray-100 p-2">
+                <div className="mx-5 font-semibold text-blue-800">Total:</div>
+                <div className="mx-5 font-semibold text-slate-600">$ {wallet.amount}</div>
+              </li>
+            </>
+          ) : (
+            <p className="text-center text-2xl font-bold text-red-600">No hay Transferencias</p>
+          )}
+        </ul>
       </div>
       <div>
         <form onSubmit={handleSubmit} className="flex flex-col">
@@ -115,6 +126,6 @@ export function Wallet() {
           </div>
         </form>
       </div>
-    </div>
+    </section>
   )
 }
