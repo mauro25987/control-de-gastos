@@ -14,7 +14,10 @@ export function Navbar() {
             </Link>
           </li>
           <li>
-            <Link to={'/control-de-gastos/'} className="text-slate-400 hover:text-slate-200">
+            <Link
+              to={'/control-de-gastos/transaction'}
+              className="text-slate-400 hover:text-slate-200"
+            >
               Transferencias
             </Link>
           </li>
